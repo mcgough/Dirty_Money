@@ -5,8 +5,23 @@ const getPrice = (str) => {
   return parseFloat(str.split('$')[1].split(' ')[0].replace(/,/g, '.'), 10);
 };
 
-const handleTransaction = (response, state) => {
-  const { id, content, links } = response.data;
+const resolveResponse = (response) => {
+  if (Object.prototype.hasOwnProperty.call(response, 'data')) {
+    let { id, content, links } = response.data;
+    return { id, content, links};
+  } else {
+    let { id, content, links } = response;
+    return {id, content, links};
+  }
+};
+
+const handleTransaction = ( response, state = null) => {
+  const { id, content, links} = resolveResponse(response);
+
+  if (!state) {
+    state = { sum: 0, ids: [], total: 0 };
+  }
+
   if (!state.ids.includes(id)) {
     state.ids.push(id);
     state.sum += getPrice(content);
@@ -25,15 +40,7 @@ const handleTransaction = (response, state) => {
   }
 };
 
-const getTransactionsSum = (url) => {
-  axios.get(url)
-    .then((resp) => {
-      const state = { sum: 0, ids: [], total: 0 };
-      handleTransaction(resp, state);
-    })
-    .catch(err => console.log(err));
-}
+handleTransaction(transaction);
 
-getTransactionsSum(transaction);
 
 
