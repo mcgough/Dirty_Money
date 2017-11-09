@@ -15,6 +15,10 @@ const resolveResponse = (response) => {
   }
 };
 
+const logResult = (sum) => {
+  return console.log(`$${sum.toFixed(2).toString()}`);
+};
+
 const handleTransaction = ( response, state = null) => {
   const { id, content, links} = resolveResponse(response);
 
@@ -27,7 +31,7 @@ const handleTransaction = ( response, state = null) => {
     state.sum += getPrice(content);
     state.total += links.length;
     if (state.total === 0) {
-      return console.log(`$${state.sum.toFixed(2).toString()}`);
+      return logResult(state.sum);
     }
     for (let link of links) {
       axios.get(link)
