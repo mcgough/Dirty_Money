@@ -23,7 +23,7 @@ const handleTransaction = ( response, state = null) => {
   }
 
   if (!state.ids.includes(id)) {
-    state.ids.push(id);
+    state.ids = [...state.ids, id];
     state.sum += getPrice(content);
     state.total += links.length;
     if (state.total === 0) {
