@@ -11,7 +11,7 @@ const resolveResponse = (response) => {
     return { id, content, links};
   } else {
     let { id, content, links } = response;
-    return {id, content, links};
+    return { id, content, links };
   }
 };
 
